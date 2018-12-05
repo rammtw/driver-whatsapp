@@ -56,9 +56,9 @@ class WhatsappDriver extends HttpDriver
     protected function loadMessages()
     {
         if ($this->payload->get('messages') !== null) {
-            $messages = collect($this->payload->get('messages'))->each(function($value) {
+            $messages = collect($this->payload->get('messages'))->map(function($value) {
                 return new IncomingMessage($value['body'], $value['senderName'], $value['chatId'], $this->payload);
-            });
+            })->toArray();
         }
 
         $this->messages = $messages ?? [];
