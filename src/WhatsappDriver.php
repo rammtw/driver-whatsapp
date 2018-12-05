@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class WhatsappDriver extends HttpDriver
 {
+    /**
+     * @const string
+     */
     const DRIVER_NAME = 'WhatsApp';
-
-    const API_URL = 'https://eu23.chat-api.com/instance18023/';
-
     /**
      * @var string
      */
@@ -102,7 +102,7 @@ class WhatsappDriver extends HttpDriver
     {
         return [
             'chatId' => $matchingMessage->getRecipient(),
-            'body' => $message,
+            'body' => $message->getText()
         ];
     }
 
@@ -147,6 +147,6 @@ class WhatsappDriver extends HttpDriver
      */
     protected function buildApiUrl($endpoint)
     {
-        return $this->config->get('url') . $this->config->get('token') . '/' . $endpoint;
+        return $this->config->get('url') . $endpoint . '?token=' . $this->config->get('token');
     }
 }
