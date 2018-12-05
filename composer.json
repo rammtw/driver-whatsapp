@@ -30,7 +30,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "BotMan\\Drivers\\Whatsapp\\Providers\\WhatsappProvider"
+                "BotMan\\Drivers\\Whatsapp\\Providers\\WhatsappServiceProvider"
             ]
         }
     }
