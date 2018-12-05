@@ -56,12 +56,24 @@ class WhatsappDriver extends HttpDriver
     protected function loadMessages()
     {
         if ($this->payload->get('messages') !== null) {
-            $messages = collect($this->payload->get('messages'))->map(function($value) {
-                return new IncomingMessage($value['body'], $value['senderName'], $value['chatId'], $this->payload);
-            })->toArray();
+            $messages = collect($this->payload->get('messages'))
+                ->filter(function($value) {
+                    return !$value['fromMe'];
+                })
+                ->map(function($value) {
+                    return new IncomingMessage($value['body'], $value['senderName'], $value['chatId'], $this->payload);
+                })->toArray();
         }
 
         $this->messages = $messages ?? [];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBot()
+    {
+        return false;
     }
 
     /**
@@ -96,7 +108,7 @@ class WhatsappDriver extends HttpDriver
      * @param string|\BotMan\BotMan\Messages\Outgoing\Question $message
      * @param IncomingMessage $matchingMessage
      * @param array $additionalParameters
-//     * @return $this
+     * @return array
      */
     public function buildServicePayload($message, $matchingMessage, $additionalParameters = [])
     {
@@ -138,7 +150,11 @@ class WhatsappDriver extends HttpDriver
      */
     public function sendRequest($endpoint, array $parameters, IncomingMessage $matchingMessage)
     {
-        // TODO: Implement sendRequest() method.
+        $parameters = array_replace_recursive([
+            'chat_id' => $matchingMessage->getRecipient(),
+        ], $parameters);
+
+        return $this->http->post($this->buildApiUrl($endpoint), [], $parameters);
     }
 
     /**
