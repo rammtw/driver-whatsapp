@@ -151,7 +151,7 @@ class WhatsappDriver extends HttpDriver
     public function sendRequest($endpoint, array $parameters, IncomingMessage $matchingMessage)
     {
         $parameters = array_replace_recursive([
-            'chat_id' => $matchingMessage->getRecipient(),
+            'chatId' => $matchingMessage->getRecipient(),
         ], $parameters);
 
         return $this->http->post($this->buildApiUrl($endpoint), [], $parameters);
