@@ -61,7 +61,9 @@ class WhatsappDriver extends HttpDriver
                     return !$value['fromMe'];
                 })
                 ->map(function($value) {
-                    return new IncomingMessage($value['body'], $value['author'], $value['chatId'], $this->payload);
+                    $message = new IncomingMessage($value['body'], $value['author'], $value['chatId'], $this->payload);
+                    $message->addExtras('userName', $value['senderName']);
+                    return $message;
                 })->toArray();
         }
 
