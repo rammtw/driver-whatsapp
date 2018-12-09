@@ -2,7 +2,7 @@
 
 namespace BotMan\Drivers\Whatsapp;
 
-use App\WhatsApp\Extensions\User;
+use BotMan\Drivers\Whatsapp\Extensions\User;
 use BotMan\BotMan\Drivers\HttpDriver;
 use BotMan\BotMan\Interfaces\DriverInterface;
 use BotMan\BotMan\Interfaces\UserInterface;
